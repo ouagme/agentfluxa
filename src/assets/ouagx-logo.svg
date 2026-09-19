@@ -1,0 +1,18 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="64" y1="64" x2="448" y2="448" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0F172A"/>
+      <stop offset="1" stop-color="#111827"/>
+    </linearGradient>
+    <linearGradient id="glow" x1="128" y1="80" x2="384" y2="432" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#34D399"/>
+      <stop offset="1" stop-color="#10B981"/>
+    </linearGradient>
+  </defs>
+  <rect x="32" y="32" width="448" height="448" rx="104" fill="url(#bg)"/>
+  <circle cx="256" cy="256" r="146" fill="url(#glow)" opacity="0.18"/>
+  <circle cx="256" cy="256" r="120" stroke="url(#glow)" stroke-width="18" opacity="0.9"/>
+  <path d="M186 192C186 175.431 199.431 162 216 162H296C317.539 162 335 179.461 335 201V214C335 235.539 317.539 253 296 253H259C239.118 253 223 269.118 223 289V290C223 310.882 239.118 327 259 327H296C317.539 327 335 344.461 335 366V371C335 392.539 317.539 410 296 410H216C199.431 410 186 396.569 186 380V192Z" fill="url(#glow)" opacity="0.92"/>
+  <path d="M186 196H223V316H186V196ZM275 196H335V230H275V196ZM275 280H335V310H275V280Z" fill="#ECFDF5"/>
+  <text x="256" y="355" text-anchor="middle" fill="#ECFDF5" font-family="Arial, Helvetica, sans-serif" font-weight="700" font-size="54" letter-spacing="2">OUAGx</text>
+</svg>
