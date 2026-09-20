@@ -4,10 +4,10 @@ export function AboutPage() {
   return (
     <div className="container-shell py-16">
       <div className="mx-auto max-w-3xl text-center">
-        <p className="mb-3 text-sm uppercase tracking-[0.3em] text-green-300">About PLfit</p>
-        <h1 className="text-4xl font-black text-white sm:text-5xl">Built for sustainable results.</h1>
+        <p className="mb-3 text-sm uppercase tracking-[0.3em] text-green-300">About OUAGx</p>
+        <h1 className="text-4xl font-black text-white sm:text-5xl">Built for meaningful momentum.</h1>
         <p className="mt-6 text-lg text-slate-300">
-          PLfit was created for people who want more than a generic workout plan. We combine training, nutrition, and progress tracking into one emotional, data-driven experience.
+          OUAGx was created for people who want more than generic answers. We combine research, reasoning, and action-oriented guidance into a single intelligent workflow.
         </p>
       </div>
 

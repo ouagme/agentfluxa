@@ -31,7 +31,7 @@ export function Navbar() {
           <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-green-400 to-emerald-600 text-slate-950">
             <Sparkles size={18} />
           </div>
-          <span>PLfit</span>
+          <span>OUAGx</span>
         </Link>
 
         <nav className="hidden items-center gap-6 md:flex">

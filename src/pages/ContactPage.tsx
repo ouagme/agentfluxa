@@ -14,7 +14,7 @@ export function ContactPage() {
       <div className="grid gap-6 lg:grid-cols-[1fr_1.2fr]">
         <Card className="p-6">
           <div className="space-y-5">
-            <div className="flex items-center gap-3"><Mail className="text-green-300" size={18} /> <span className="text-slate-300">hello@plfit.net</span></div>
+            <div className="flex items-center gap-3"><Mail className="text-green-300" size={18} /> <span className="text-slate-300">hello@ouagx.com</span></div>
             <div className="flex items-center gap-3"><Phone className="text-green-300" size={18} /> <span className="text-slate-300">+1 (800) 123-4567</span></div>
             <div className="flex items-center gap-3"><MapPin className="text-green-300" size={18} /> <span className="text-slate-300">Austin, Texas</span></div>
           </div>

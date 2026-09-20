@@ -23,13 +23,13 @@ export function HomePage() {
           <div>
             <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-green-400/20 bg-green-500/10 px-3 py-1 text-sm text-green-300">
               <Sparkles size={14} />
-              Performance coaching for real life
+              Autonomous intelligence for focused action
             </div>
             <h1 className="max-w-xl text-4xl font-black tracking-tight text-white sm:text-5xl lg:text-6xl">
-              Train Better. Eat Better. Live Better.
+              Think sharper. Move faster. Ship better.
             </h1>
             <p className="mt-6 max-w-lg text-lg text-slate-300">
-              PLfit combines personalized workouts, nutrition guidance, and progress tracking so you can stay consistent and achieve more.
+              OUAGx combines research depth, decision support, and execution-ready thinking so you can turn intent into momentum.
             </p>
             <div className="mt-8 flex flex-wrap gap-4">
               <Link to="/signup"><Button>Start Training</Button></Link>
@@ -122,8 +122,8 @@ export function HomePage() {
       <section className="bg-slate-900/60 py-16">
         <div className="container-shell">
           <div className="mb-10 text-center">
-            <p className="mb-2 text-sm uppercase tracking-[0.3em] text-green-300">Why PLfit?</p>
-            <h2 className="section-title">A simpler way to train and recover</h2>
+            <p className="mb-2 text-sm uppercase tracking-[0.3em] text-green-300">Why OUAGx?</p>
+            <h2 className="section-title">A clearer path from ideas to action</h2>
           </div>
           <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
             {features.map(({ title, desc, icon: Icon }) => (
@@ -144,7 +144,7 @@ export function HomePage() {
           <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
             <div>
               <p className="text-sm uppercase tracking-[0.2em] text-green-300">Ready to start your fitness journey?</p>
-              <h3 className="mt-3 text-3xl font-bold text-white">Make real progress with PLfit.</h3>
+              <h3 className="mt-3 text-3xl font-bold text-white">Move faster with OUAGx.</h3>
             </div>
             <div className="flex flex-wrap gap-3">
               <Link to="/signup"><Button>Sign Up Free</Button></Link>

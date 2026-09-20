@@ -34,7 +34,7 @@ export function AdminSidebar() {
         </div>
         <div>
           <p className="text-xs uppercase tracking-[0.2em] text-slate-400">Admin</p>
-          <p className="font-semibold text-white">PLfit Control</p>
+          <p className="font-semibold text-white">OUAGx Control</p>
         </div>
       </div>
 

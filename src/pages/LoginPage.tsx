@@ -9,7 +9,7 @@ export function LoginPage() {
   const { setAuthState, users } = useContext(AppContext);
   const navigate = useNavigate();
   const location = useLocation();
-  const [email, setEmail] = useState('ava@plfit.net');
+  const [email, setEmail] = useState('ava@ouagx.com');
   const [password, setPassword] = useState('demo123');
   const [error, setError] = useState('');
 
@@ -32,7 +32,7 @@ export function LoginPage() {
       <Card className="w-full max-w-md p-8">
         <div className="mb-6 text-center">
           <p className="text-sm uppercase tracking-[0.3em] text-green-300">Welcome back</p>
-          <h1 className="mt-2 text-3xl font-bold text-white">Login to PLfit</h1>
+          <h1 className="mt-2 text-3xl font-bold text-white">Login to OUAGx</h1>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">

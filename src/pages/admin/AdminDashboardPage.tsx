@@ -6,7 +6,7 @@ export function AdminDashboardPage() {
     <div className="space-y-6">
       <div>
         <p className="text-sm uppercase tracking-[0.3em] text-amber-300">Admin dashboard</p>
-        <h1 className="mt-2 text-3xl font-black text-white">PLfit overview</h1>
+        <h1 className="mt-2 text-3xl font-black text-white">OUAGx overview</h1>
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">

@@ -14,11 +14,11 @@ export function AdminSettingsPage() {
         <div className="grid gap-4 md:grid-cols-2">
           <div>
             <label className="mb-2 block text-sm text-slate-300">Platform name</label>
-            <Input value="PLfit" />
+            <Input value="OUAGx" />
           </div>
           <div>
             <label className="mb-2 block text-sm text-slate-300">API base URL</label>
-            <Input value="https://api.plfit.net" />
+            <Input value="https://api.ouagx.com" />
           </div>
           <div>
             <label className="mb-2 block text-sm text-slate-300">Database provider</label>
