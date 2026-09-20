@@ -1,4 +1,4 @@
-import { ArrowUp, BarChart3, Bot, Check, ChevronDown, Copy, ExternalLink, Globe2, KeyRound, LayoutDashboard, Link2, Mail, Menu, Plus, Save, Settings2, Sparkles, Users, X } from 'lucide-react';
+import { ArrowUp, BarChart3, Bot, Check, ChevronDown, Copy, ExternalLink, Globe2, KeyRound, LayoutDashboard, Link2, Mail, Menu, Plus, RefreshCw, Save, Settings2, ShieldCheck, Sparkles, Terminal, Users, X } from 'lucide-react';
 import React, { FormEvent, useEffect, useMemo, useRef, useState } from 'react';
 import { Link, Route, Routes } from 'react-router-dom';
 import coreImage from './assets/ouagx-logo.svg';
@@ -91,6 +91,38 @@ function ChatPage() {
   </main>;
 }
 
+function ApiPage() {
+  const apiUrl = 'https://ouagx.com/api';
+  const [apiKey, setApiKey] = useState(() => localStorage.getItem('ouagx-terminal-api-key') || '');
+  const [copied, setCopied] = useState('');
+
+  const generateKey = () => {
+    const key = `ouagx_${crypto.randomUUID().replace(/-/g, '')}`;
+    localStorage.setItem('ouagx-terminal-api-key', key);
+    setApiKey(key);
+    setCopied('');
+  };
+
+  const copy = async (value: string, label: string) => {
+    await navigator.clipboard?.writeText(value);
+    setCopied(label);
+    window.setTimeout(() => setCopied(''), 1500);
+  };
+
+  const command = `set OUAGX_API_URL=${apiUrl}\nset OUAGX_API_KEY=${apiKey || 'YOUR_API_KEY'}\nset OUAGX_PROVIDER=ouagx-api\nnpm run terminal`;
+
+  return <main className="api-page">
+    <nav className="api-nav"><Link to="/" className="brand"><div className="brand-mark"><Bot size={18} /></div><span>OUAG<span>x</span></span></Link><Link to="/chat" className="api-chat-link">Open chat <ArrowUp size={14} /></Link></nav>
+    <section className="api-hero"><div><p className="api-kicker"><ShieldCheck size={14} /> TERMINAL API ACCESS</p><h1>Generate a key for your OUAGx terminal.</h1><p>Issue a connection key, point the Windows terminal app at the online OUAGx API, and start a session from any machine.</p></div><div className="api-status"><span className="live-dot" /><div><strong>API online</strong><small>{apiUrl}</small></div></div></section>
+    <section className="api-grid">
+      <article className="api-card api-key-card"><div className="api-card-heading"><div><p>01 / ACCESS KEY</p><h2>Your terminal key</h2></div><KeyRound size={19} /></div><p className="api-card-copy">Keep this key private. It links your local OUAGx executable to the online project API.</p><div className="api-key-field"><code>{apiKey || 'Generate a new access key'}</code>{apiKey && <button onClick={() => copy(apiKey, 'key')} aria-label="Copy API key" title="Copy API key">{copied === 'key' ? <Check size={16} /> : <Copy size={16} />}</button>}</div><button className="api-generate" onClick={generateKey}>{apiKey ? <RefreshCw size={16} /> : <KeyRound size={16} />}{apiKey ? 'Rotate key' : 'Generate API key'}</button></article>
+      <article className="api-card"><div className="api-card-heading"><div><p>02 / ONLINE ENDPOINT</p><h2>Project API URL</h2></div><Globe2 size={19} /></div><p className="api-card-copy">Use this address in the terminal executable or any OpenAI-compatible client.</p><div className="api-url-field"><code>{apiUrl}</code><button onClick={() => copy(apiUrl, 'url')} aria-label="Copy API URL" title="Copy API URL">{copied === 'url' ? <Check size={16} /> : <Copy size={16} />}</button></div><span className="api-route"><span className="live-dot" /> POST /chat</span></article>
+    </section>
+    <section className="api-setup"><div className="api-card-heading"><div><p>03 / WINDOWS TERMINAL</p><h2>Connect the executable</h2></div><Terminal size={19} /></div><p className="api-card-copy">Paste these commands in the OUAGx terminal folder, then launch the app.</p><div className="api-command"><pre>{command}</pre><button onClick={() => copy(command, 'command')} aria-label="Copy terminal setup commands" title="Copy setup commands">{copied === 'command' ? <Check size={16} /> : <Copy size={16} />}</button></div><p className="api-note">Your key is stored only in this browser until you copy it. Generate a new key if this one is exposed.</p></section>
+    <footer className="api-footer"><span>OUAGx API v1</span><span>///</span><Link to="/about">Documentation</Link></footer>
+  </main>;
+}
+
 function DesktopModePage() {
   const openOuagx = () => window.open('https://ouagx.com', '_blank', 'noopener,noreferrer');
 
@@ -104,6 +136,10 @@ function DesktopModePage() {
         <Link to="/chat" className="desktop-icon">
           <span className="icon-tile window-chat" aria-hidden="true" />
           <span>Chat</span>
+        </Link>
+        <Link to="/api" className="desktop-icon">
+          <span className="icon-tile window-api" aria-hidden="true" />
+          <span>API</span>
         </Link>
         <Link to="/admin" className="desktop-icon">
           <span className="icon-tile window-admin" aria-hidden="true" />
@@ -167,7 +203,8 @@ function LinkBioPage() {
     <section className="bio-links" aria-label="OUAGx links">
       <Link to="/chat" className="bio-link bio-primary"><span>01</span><div><strong>Chat with OUAGx</strong><small>Open the multi-provider AI workspace.</small></div><ExternalLink size={19} /></Link>
       <Link to="/about" className="bio-link"><span>02</span><div><strong>Meet OUAGx</strong><small>The autonomous AI model built for real momentum.</small></div><ChevronDown size={19} /></Link>
-      <a href="mailto:hello@ouagx.com" className="bio-link"><span>03</span><div><strong>Collaborate with us</strong><small>hello@ouagx.com</small></div><Mail size={19} /></a>
+      <Link to="/api" className="bio-link"><span>03</span><div><strong>Generate terminal API</strong><small>Connect the OUAGx Windows executable.</small></div><Terminal size={19} /></Link>
+      <a href="mailto:hello@ouagx.com" className="bio-link"><span>04</span><div><strong>Collaborate with us</strong><small>hello@ouagx.com</small></div><Mail size={19} /></a>
     </section>
     <section className="bio-signal" id="about"><p>BUILT IN PUBLIC</p><strong>11.8K</strong><span>people following the signal</span></section>
     <div className="bio-social"><a href="https://x.com/ouagx" target="_blank" rel="noreferrer">X / @ouagx <ExternalLink size={13} /></a></div>
@@ -201,7 +238,7 @@ function AdminPage() {
 }
 
 export default function App() {
-  return <Routes><Route path="/" element={<DesktopModePage />} /><Route path="/about" element={<AboutPage />} /><Route path="/chat" element={<ChatPage />} /><Route path="/admin" element={<AdminPage />} /><Route path="*" element={<DesktopModePage />} /></Routes>;
+  return <Routes><Route path="/" element={<DesktopModePage />} /><Route path="/about" element={<AboutPage />} /><Route path="/chat" element={<ChatPage />} /><Route path="/api" element={<ApiPage />} /><Route path="/admin" element={<AdminPage />} /><Route path="*" element={<DesktopModePage />} /></Routes>;
 }
 
 const defaultAuthState: AuthState = { user: demoUsers[1], isAuthenticated: true, isAdmin: false };
