@@ -18,7 +18,7 @@ export function AdminSettingsPage() {
           </div>
           <div>
             <label className="mb-2 block text-sm text-slate-300">API base URL</label>
-            <Input value="https://api.ouagx.com" />
+            <Input value="https://ouagx.com/api" />
           </div>
           <div>
             <label className="mb-2 block text-sm text-slate-300">Database provider</label>

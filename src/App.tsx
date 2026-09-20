@@ -91,6 +91,62 @@ function ChatPage() {
   </main>;
 }
 
+function DesktopModePage() {
+  const openOuagx = () => window.open('https://ouagx.com', '_blank', 'noopener,noreferrer');
+
+  return <main className="windows-shell">
+    <div className="desktop-grid">
+      <div className="desktop-icons">
+        <button className="desktop-icon" onClick={openOuagx}>
+          <span className="icon-tile window-globe" aria-hidden="true" />
+          <span>OUAGx</span>
+        </button>
+        <Link to="/chat" className="desktop-icon">
+          <span className="icon-tile window-chat" aria-hidden="true" />
+          <span>Chat</span>
+        </Link>
+        <Link to="/admin" className="desktop-icon">
+          <span className="icon-tile window-admin" aria-hidden="true" />
+          <span>Admin</span>
+        </Link>
+      </div>
+
+      <section className="windows-window">
+        <div className="window-header">
+          <div className="window-controls">
+            <span className="control red" />
+            <span className="control yellow" />
+            <span className="control green" />
+          </div>
+          <div className="window-title">OUAGx Desktop</div>
+        </div>
+
+        <div className="window-body">
+          <div className="system-badge">Windows desktop mode</div>
+          <h1>Connect directly to OUAGx</h1>
+          <p>Launch the live OUAGx website from this Windows-style workspace and move straight into the product experience.</p>
+
+          <div className="desktop-actions">
+            <button className="primary-action" onClick={openOuagx}>Open OUAGx.com</button>
+            <Link to="/chat" className="secondary-action">Open chat</Link>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <footer className="windows-taskbar">
+      <button className="start-button">
+        <span className="start-logo" aria-hidden="true">❖</span>
+        Start
+      </button>
+      <div className="taskbar-apps">
+        <button className="tiny-app active" onClick={openOuagx}>OUAGx</button>
+      </div>
+      <div className="taskbar-clock">9:41 AM</div>
+    </footer>
+  </main>;
+}
+
 function LinkBioPage() {
   const [copied, setCopied] = useState(false);
   const copyLink = async () => {
@@ -145,7 +201,7 @@ function AdminPage() {
 }
 
 export default function App() {
-  return <Routes><Route path="/" element={<LinkBioPage />} /><Route path="/about" element={<AboutPage />} /><Route path="/chat" element={<ChatPage />} /><Route path="/admin" element={<AdminPage />} /><Route path="*" element={<LinkBioPage />} /></Routes>;
+  return <Routes><Route path="/" element={<DesktopModePage />} /><Route path="/about" element={<AboutPage />} /><Route path="/chat" element={<ChatPage />} /><Route path="/admin" element={<AdminPage />} /><Route path="*" element={<DesktopModePage />} /></Routes>;
 }
 
 const defaultAuthState: AuthState = { user: demoUsers[1], isAuthenticated: true, isAdmin: false };
