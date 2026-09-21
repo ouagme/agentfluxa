@@ -1,4 +1,5 @@
 import { ArrowUp, BarChart3, Bot, Check, ChevronDown, Copy, ExternalLink, Globe2, KeyRound, LayoutDashboard, Link2, Mail, Menu, Plus, RefreshCw, Save, Settings2, ShieldCheck, Sparkles, Terminal, Users, X } from 'lucide-react';
+import { ArrowUp, BarChart3, Bot, Check, ChevronDown, Copy, Download, ExternalLink, Globe2, KeyRound, LayoutDashboard, Link2, Mail, Menu, Plus, RefreshCw, Save, Settings2, ShieldCheck, Sparkles, Terminal, Users, X } from 'lucide-react';
 import React, { FormEvent, useEffect, useMemo, useRef, useState } from 'react';
 import { Link, Route, Routes } from 'react-router-dom';
 import coreImage from './assets/ouagx-logo.svg';
@@ -110,6 +111,15 @@ function ApiPage() {
   };
 
   const command = `set OUAGX_API_URL=${apiUrl}\nset OUAGX_API_KEY=${apiKey || 'YOUR_API_KEY'}\nset OUAGX_PROVIDER=ouagx-api\nnpm run terminal`;
+  const downloadTerminalFile = () => {
+    const file = `@echo off\r\ncd /d "%~dp0"\r\nset "OUAGX_API_URL=${apiUrl}"\r\nset "OUAGX_API_KEY=${apiKey || 'YOUR_API_KEY'}"\r\nset "OUAGX_PROVIDER=ouagx-api"\r\necho Starting OUAGx terminal...\r\nnpm run terminal\r\npause\r\n`;
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(new Blob([file], { type: 'application/bat' }));
+    link.download = 'ouagx-terminal-api.bat';
+    link.click();
+    URL.revokeObjectURL(link.href);
+  };
+  <section className="api-setup"><div className="api-card-heading"><div><p>03 / WINDOWS TERMINAL</p><h2>Connect the executable</h2></div><Terminal size={19} /></div><p className="api-card-copy">Download a launcher for the OUAGx terminal folder, then double-click it on Windows.</p><div className="api-command"><pre>{command}</pre><button onClick={() => copy(command, 'command')} aria-label="Copy terminal setup commands" title="Copy setup commands">{copied === 'command' ? <Check size={16} /> : <Copy size={16} />}</button></div><button className="api-download" onClick={downloadTerminalFile}><Download size={16} /> Download OUAGx terminal file</button><p className="api-note">The downloaded `.bat` file contains this API key. Keep it private and rotate the key if the file is exposed.</p></section>
 
   return <main className="api-page">
     <nav className="api-nav"><Link to="/" className="brand"><div className="brand-mark"><Bot size={18} /></div><span>OUAG<span>x</span></span></Link><Link to="/chat" className="api-chat-link">Open chat <ArrowUp size={14} /></Link></nav>
