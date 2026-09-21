@@ -175,6 +175,7 @@ function DesktopModePage() {
           <div className="desktop-actions">
             <button className="primary-action" onClick={openOuagx}>Open OUAGx.com</button>
             <Link to="/chat" className="secondary-action">Open chat</Link>
+            <Link to="/api" className="secondary-action"><Download size={16} /> Download terminal</Link>
           </div>
         </div>
       </section>
