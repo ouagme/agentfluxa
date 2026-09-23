@@ -92,7 +92,7 @@ function ChatPage() {
 }
 
 function ApiPage() {
-  const apiUrl = 'https://ouagx.com/api';
+  const apiUrl = 'https://www.ouagx.com/api';
   const [apiKey, setApiKey] = useState(() => localStorage.getItem('ouagx-terminal-api-key') || '');
   const [copied, setCopied] = useState('');
 
@@ -110,7 +110,7 @@ function ApiPage() {
   };
 
   const command = `set OUAGX_API_URL=${apiUrl}\nset OUAGX_API_KEY=${apiKey || 'YOUR_API_KEY'}\nset OUAGX_PROVIDER=ouagx-api\nnpm run terminal`;
-  const powershellCommand = 'irm https://ouagx.com/install.ps1 | iex';
+  const powershellCommand = 'irm https://www.ouagx.com/install.ps1 | iex';
   const downloadTerminalFile = () => {
     const file = `@echo off\r\ncd /d "%~dp0"\r\nset "OUAGX_API_URL=${apiUrl}"\r\nset "OUAGX_API_KEY=${apiKey || 'YOUR_API_KEY'}"\r\nset "OUAGX_PROVIDER=ouagx-api"\r\necho Starting OUAGx terminal...\r\nnpm run terminal\r\npause\r\n`;
     const link = document.createElement('a');

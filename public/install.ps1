@@ -4,7 +4,7 @@ param(
 )
 
 $ErrorActionPreference = 'Stop'
-$source = 'https://ouagx.com/ouagx.ps1'
+$source = 'https://www.ouagx.com/ouagx.ps1'
 $fallbackSource = 'https://raw.githubusercontent.com/ouagme/agentfluxa/main/public/ouagx.ps1'
 $target = Join-Path $InstallDir 'ouagx.ps1'
 

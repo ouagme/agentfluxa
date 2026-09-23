@@ -13,19 +13,19 @@ Usage:
   npm run terminal -- --provider openai --model gpt-4.1-mini
   npm run terminal -- --provider gemini --model gemini-2.5-flash
   npm run terminal -- --provider custom --base-url https://your-url/v1
-  npm run terminal -- --provider ouagx-api --api-url https://ouagx.com/api
+  npm run terminal -- --provider ouagx-api --api-url https://www.ouagx.com/api
 
 Environment variables:
   OUAGX_API_KEY       API key for your model provider
   OUAGX_MODEL         Model name (provider default applies when omitted)
   OUAGX_PROVIDER      openrouter | openai | gemini | custom | ouagx-api
   OUAGX_BASE_URL      Base URL for custom OpenAI-compatible APIs
-  OUAGX_API_URL       URL for the OUAGx API service (default: https://ouagx.com/api)
+  OUAGX_API_URL       URL for the OUAGx API service (default: https://www.ouagx.com/api)
 
 Notes:
   - Default provider is OpenRouter.
   - If no API key is set, the app asks for one in the terminal.
-  - The OUAGx API route connects the CLI to the online OUAGx project API at https://ouagx.com/api.
+  - The OUAGx API route connects the CLI to the online OUAGx project API at https://www.ouagx.com/api.
 `;
 
 if (args.includes('--help') || args.includes('-h')) {
@@ -34,7 +34,7 @@ if (args.includes('--help') || args.includes('-h')) {
 }
 
 function parseArgs() {
-  const values = { provider: process.env.OUAGX_PROVIDER || 'openrouter', model: process.env.OUAGX_MODEL || undefined, baseUrl: process.env.OUAGX_BASE_URL || undefined, apiKey: process.env.OUAGX_API_KEY || process.env.OPENAI_API_KEY || '', apiUrl: process.env.OUAGX_API_URL || 'https://ouagx.com/api' };
+  const values = { provider: process.env.OUAGX_PROVIDER || 'openrouter', model: process.env.OUAGX_MODEL || undefined, baseUrl: process.env.OUAGX_BASE_URL || undefined, apiKey: process.env.OUAGX_API_KEY || process.env.OPENAI_API_KEY || '', apiUrl: process.env.OUAGX_API_URL || 'https://www.ouagx.com/api' };
 
   for (let i = 0; i < args.length; i += 1) {
     const arg = args[i];
@@ -79,7 +79,7 @@ function getEndpoint(provider, baseUrl) {
 
 async function requestModel({ provider, model, baseUrl, apiKey, apiUrl }, messages) {
   if (provider === 'ouagx-api') {
-    const endpoint = `${(apiUrl || 'https://ouagx.com/api').replace(/\/$/, '')}/chat`;
+    const endpoint = `${(apiUrl || 'https://www.ouagx.com/api').replace(/\/$/, '')}/chat`;
     const response = await fetch(endpoint, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -193,8 +193,8 @@ async function configureProvider(options, rl) {
   }
 
   if (provider === 'ouagx-api') {
-    const apiUrl = await rl.question('OUAGx API URL [https://ouagx.com/api]: ');
-    options.apiUrl = (apiUrl || 'https://ouagx.com/api').trim();
+    const apiUrl = await rl.question('OUAGx API URL [https://www.ouagx.com/api]: ');
+    options.apiUrl = (apiUrl || 'https://www.ouagx.com/api').trim();
     options.model = (await rl.question(`Model [${options.model}]: `)).trim() || options.model;
     options.apiKey = (await rl.question('API key for the backend provider: ')).trim();
     return options;

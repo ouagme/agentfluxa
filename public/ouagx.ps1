@@ -6,7 +6,7 @@ param(
 )
 
 $ErrorActionPreference = 'Stop'
-if (-not $ApiUrl) { $ApiUrl = 'https://ouagx.com/api' }
+if (-not $ApiUrl) { $ApiUrl = 'https://www.ouagx.com/api' }
 if (-not $Provider) { $Provider = 'openrouter' }
 if (-not $Model) {
   $Model = if ($Provider -eq 'gemini') { 'gemini-2.5-flash' } elseif ($Provider -eq 'openai') { 'gpt-4.1-mini' } else { 'openai/gpt-4.1-mini' }
