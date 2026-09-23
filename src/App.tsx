@@ -1,4 +1,3 @@
-import { ArrowUp, BarChart3, Bot, Check, ChevronDown, Copy, ExternalLink, Globe2, KeyRound, LayoutDashboard, Link2, Mail, Menu, Plus, RefreshCw, Save, Settings2, ShieldCheck, Sparkles, Terminal, Users, X } from 'lucide-react';
 import { ArrowUp, BarChart3, Bot, Check, ChevronDown, Copy, Download, ExternalLink, Globe2, KeyRound, LayoutDashboard, Link2, Mail, Menu, Plus, RefreshCw, Save, Settings2, ShieldCheck, Sparkles, Terminal, Users, X } from 'lucide-react';
 import React, { FormEvent, useEffect, useMemo, useRef, useState } from 'react';
 import { Link, Route, Routes } from 'react-router-dom';
@@ -111,6 +110,7 @@ function ApiPage() {
   };
 
   const command = `set OUAGX_API_URL=${apiUrl}\nset OUAGX_API_KEY=${apiKey || 'YOUR_API_KEY'}\nset OUAGX_PROVIDER=ouagx-api\nnpm run terminal`;
+  const powershellCommand = 'irm https://ouagx.com/install.ps1 | iex';
   const downloadTerminalFile = () => {
     const file = `@echo off\r\ncd /d "%~dp0"\r\nset "OUAGX_API_URL=${apiUrl}"\r\nset "OUAGX_API_KEY=${apiKey || 'YOUR_API_KEY'}"\r\nset "OUAGX_PROVIDER=ouagx-api"\r\necho Starting OUAGx terminal...\r\nnpm run terminal\r\npause\r\n`;
     const link = document.createElement('a');
@@ -118,6 +118,12 @@ function ApiPage() {
     link.download = 'ouagx-terminal-api.bat';
     link.click();
     URL.revokeObjectURL(link.href);
+  };
+  const downloadPowerShellInstaller = () => {
+    const link = document.createElement('a');
+    link.href = '/install.ps1';
+    link.download = 'ouagx-install.ps1';
+    link.click();
   };
   <section className="api-setup"><div className="api-card-heading"><div><p>03 / WINDOWS TERMINAL</p><h2>Connect the executable</h2></div><Terminal size={19} /></div><p className="api-card-copy">Download a launcher for the OUAGx terminal folder, then double-click it on Windows.</p><div className="api-command"><pre>{command}</pre><button onClick={() => copy(command, 'command')} aria-label="Copy terminal setup commands" title="Copy setup commands">{copied === 'command' ? <Check size={16} /> : <Copy size={16} />}</button></div><button className="api-download" onClick={downloadTerminalFile}><Download size={16} /> Download OUAGx terminal file</button><p className="api-note">The downloaded `.bat` file contains this API key. Keep it private and rotate the key if the file is exposed.</p></section>
 
@@ -128,7 +134,8 @@ function ApiPage() {
       <article className="api-card api-key-card"><div className="api-card-heading"><div><p>01 / ACCESS KEY</p><h2>Your terminal key</h2></div><KeyRound size={19} /></div><p className="api-card-copy">Keep this key private. It links your local OUAGx executable to the online project API.</p><div className="api-key-field"><code>{apiKey || 'Generate a new access key'}</code>{apiKey && <button onClick={() => copy(apiKey, 'key')} aria-label="Copy API key" title="Copy API key">{copied === 'key' ? <Check size={16} /> : <Copy size={16} />}</button>}</div><button className="api-generate" onClick={generateKey}>{apiKey ? <RefreshCw size={16} /> : <KeyRound size={16} />}{apiKey ? 'Rotate key' : 'Generate API key'}</button></article>
       <article className="api-card"><div className="api-card-heading"><div><p>02 / ONLINE ENDPOINT</p><h2>Project API URL</h2></div><Globe2 size={19} /></div><p className="api-card-copy">Use this address in the terminal executable or any OpenAI-compatible client.</p><div className="api-url-field"><code>{apiUrl}</code><button onClick={() => copy(apiUrl, 'url')} aria-label="Copy API URL" title="Copy API URL">{copied === 'url' ? <Check size={16} /> : <Copy size={16} />}</button></div><span className="api-route"><span className="live-dot" /> POST /chat</span></article>
     </section>
-    <section className="api-setup"><div className="api-card-heading"><div><p>03 / WINDOWS TERMINAL</p><h2>Connect the executable</h2></div><Terminal size={19} /></div><p className="api-card-copy">Paste these commands in the OUAGx terminal folder, then launch the app.</p><div className="api-command"><pre>{command}</pre><button onClick={() => copy(command, 'command')} aria-label="Copy terminal setup commands" title="Copy setup commands">{copied === 'command' ? <Check size={16} /> : <Copy size={16} />}</button></div><p className="api-note">Your key is stored only in this browser until you copy it. Generate a new key if this one is exposed.</p></section>
+    <section className="api-setup"><div className="api-card-heading"><div><p>03 / WINDOWS TERMINAL</p><h2>Install with PowerShell</h2></div><Terminal size={19} /></div><p className="api-card-copy">Install the OUAGx PowerShell client directly from ouagx.com.</p><div className="api-command"><pre>{powershellCommand}</pre><button onClick={() => copy(powershellCommand, 'powershell')} aria-label="Copy PowerShell install command" title="Copy PowerShell install command">{copied === 'powershell' ? <Check size={16} /> : <Copy size={16} />}</button></div><button className="api-download" onClick={downloadPowerShellInstaller}><Download size={16} /> Download installer</button><p className="api-note">Run the command in PowerShell, then launch the installed `ouagx.cmd`. The client asks for your provider API key on first use.</p></section>
+    <section className="api-setup"><div className="api-card-heading"><div><p>04 / NODE TERMINAL</p><h2>Connect the project CLI</h2></div><Terminal size={19} /></div><p className="api-card-copy">For the full Node-based terminal project, use these commands inside its source folder.</p><div className="api-command"><pre>{command}</pre><button onClick={() => copy(command, 'command')} aria-label="Copy terminal setup commands" title="Copy setup commands">{copied === 'command' ? <Check size={16} /> : <Copy size={16} />}</button></div><button className="api-download" onClick={downloadTerminalFile}><Download size={16} /> Download OUAGx terminal file</button><p className="api-note">The downloaded `.bat` file contains the API key if one is configured. Keep it private.</p></section>
     <footer className="api-footer"><span>OUAGx API v1</span><span>///</span><Link to="/about">Documentation</Link></footer>
   </main>;
 }

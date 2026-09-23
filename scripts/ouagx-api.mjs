@@ -4,6 +4,12 @@ import http from 'node:http';
 
 const PORT = Number(process.env.OUAGX_API_PORT || 4020);
 
+function getDefaultModel(provider) {
+  if (provider === 'openai') return 'gpt-4.1-mini';
+  if (provider === 'gemini') return 'gemini-2.5-flash';
+  return 'openai/gpt-4.1-mini';
+}
+
 const server = http.createServer(async (req, res) => {
   const { method, url } = req;
 
@@ -12,7 +18,7 @@ const server = http.createServer(async (req, res) => {
     res.end(JSON.stringify({
       name: 'OUAGx API',
       status: 'ok',
-      providers: ['openrouter', 'openai', 'custom', 'ouagx-api'],
+      providers: ['openrouter', 'openai', 'gemini', 'custom', 'ouagx-api'],
       endpoint: '/api/chat',
     }));
     return;
@@ -29,7 +35,7 @@ const server = http.createServer(async (req, res) => {
       try {
         const payload = JSON.parse(body || '{}');
         const provider = payload.provider || process.env.OUAGX_PROVIDER || 'openrouter';
-        const model = payload.model || process.env.OUAGX_MODEL || 'openai/gpt-4.1-mini';
+        const model = payload.model || process.env.OUAGX_MODEL || getDefaultModel(provider);
         const apiKey = payload.apiKey || process.env.OUAGX_API_KEY || '';
         const baseUrl = payload.baseUrl || process.env.OUAGX_BASE_URL || '';
         const messages = Array.isArray(payload.messages) ? payload.messages : [];
@@ -42,14 +48,15 @@ const server = http.createServer(async (req, res) => {
 
         const endpoint = provider === 'openai'
           ? 'https://api.openai.com/v1/chat/completions'
+          : provider === 'gemini'
+            ? `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${encodeURIComponent(apiKey)}`
           : provider === 'custom' && baseUrl
             ? `${baseUrl.replace(/\/$/, '')}/chat/completions`
             : 'https://openrouter.ai/api/v1/chat/completions';
 
-        const headers = {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${apiKey}`,
-        };
+        const headers = { 'Content-Type': 'application/json' };
+
+        if (provider !== 'gemini') headers.Authorization = `Bearer ${apiKey}`;
 
         if (provider === 'openrouter') {
           headers['HTTP-Referer'] = 'https://ouagx.com';
@@ -59,13 +66,18 @@ const server = http.createServer(async (req, res) => {
         const response = await fetch(endpoint, {
           method: 'POST',
           headers,
-          body: JSON.stringify({
-            model,
-            messages: [
-              { role: 'system', content: 'You are OUAGx: direct, precise, practical, and warm. Help users turn intent into useful action.' },
-              ...messages,
-            ],
-          }),
+          body: JSON.stringify(provider === 'gemini'
+            ? {
+                systemInstruction: { parts: [{ text: 'You are OUAGx: direct, precise, practical, and warm. Help users turn intent into useful action.' }] },
+                contents: messages.map(message => ({ role: message.role === 'assistant' ? 'model' : 'user', parts: [{ text: message.content }] })),
+              }
+            : {
+                model,
+                messages: [
+                  { role: 'system', content: 'You are OUAGx: direct, precise, practical, and warm. Help users turn intent into useful action.' },
+                  ...messages,
+                ],
+              }),
         });
 
         const data = await response.json().catch(() => ({}));
@@ -76,7 +88,9 @@ const server = http.createServer(async (req, res) => {
           return;
         }
 
-        const answer = data.choices?.[0]?.message?.content || data.output_text || 'No response returned.';
+        const answer = provider === 'gemini'
+          ? data.candidates?.[0]?.content?.parts?.map(part => part.text || '').join('')
+          : data.choices?.[0]?.message?.content || data.output_text;
         res.writeHead(200, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify({ result: answer, provider, model }));
       } catch (error) {

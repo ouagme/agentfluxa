@@ -11,13 +11,14 @@ Usage:
   npm run terminal
   npm run terminal -- --provider openrouter
   npm run terminal -- --provider openai --model gpt-4.1-mini
+  npm run terminal -- --provider gemini --model gemini-2.5-flash
   npm run terminal -- --provider custom --base-url https://your-url/v1
   npm run terminal -- --provider ouagx-api --api-url https://ouagx.com/api
 
 Environment variables:
   OUAGX_API_KEY       API key for your model provider
-  OUAGX_MODEL         Model name (default: openai/gpt-4.1-mini for OpenRouter)
-  OUAGX_PROVIDER      openrouter | openai | custom | ouagx-api
+  OUAGX_MODEL         Model name (provider default applies when omitted)
+  OUAGX_PROVIDER      openrouter | openai | gemini | custom | ouagx-api
   OUAGX_BASE_URL      Base URL for custom OpenAI-compatible APIs
   OUAGX_API_URL       URL for the OUAGx API service (default: https://ouagx.com/api)
 
@@ -54,8 +55,16 @@ function parseArgs() {
 
 function getDefaultModel(provider) {
   if (provider === 'openai') return 'gpt-4.1-mini';
+  if (provider === 'gemini') return 'gemini-2.5-flash';
   if (provider === 'custom') return 'your-model-name';
   return 'openai/gpt-4.1-mini';
+}
+
+function getModelPresets(provider) {
+  if (provider === 'openai') return ['gpt-4.1-mini', 'gpt-4.1', 'o4-mini'];
+  if (provider === 'gemini') return ['gemini-2.5-flash', 'gemini-2.5-pro', 'gemini-2.0-flash'];
+  if (provider === 'openrouter') return ['openai/gpt-4.1-mini', 'google/gemini-2.5-flash', 'anthropic/claude-sonnet-4'];
+  return [];
 }
 
 function getEndpoint(provider, baseUrl) {
@@ -64,6 +73,7 @@ function getEndpoint(provider, baseUrl) {
     return baseUrl.replace(/\/$/, '') + '/chat/completions';
   }
   if (provider === 'openai') return 'https://api.openai.com/v1/chat/completions';
+  if (provider === 'gemini') return 'https://generativelanguage.googleapis.com/v1beta/models';
   return 'https://openrouter.ai/api/v1/chat/completions';
 }
 
@@ -74,8 +84,8 @@ async function requestModel({ provider, model, baseUrl, apiKey, apiUrl }, messag
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        provider: process.env.OUAGX_PROVIDER || 'openrouter',
-        model: model || getDefaultModel(process.env.OUAGX_PROVIDER || 'openrouter'),
+        provider: process.env.OUAGX_PROVIDER && process.env.OUAGX_PROVIDER !== 'ouagx-api' ? process.env.OUAGX_PROVIDER : 'openrouter',
+        model: model || getDefaultModel(process.env.OUAGX_PROVIDER && process.env.OUAGX_PROVIDER !== 'ouagx-api' ? process.env.OUAGX_PROVIDER : 'openrouter'),
         apiKey: apiKey || process.env.OUAGX_API_KEY || '',
         baseUrl: baseUrl || process.env.OUAGX_BASE_URL || '',
         messages,
@@ -95,6 +105,20 @@ async function requestModel({ provider, model, baseUrl, apiKey, apiUrl }, messag
 
   if (!apiKey) {
     throw new Error('No API key found. Set OUAGX_API_KEY or pass --api-key.');
+  }
+
+  if (provider === 'gemini') {
+    const response = await fetch(`${endpoint}/${finalModel}:generateContent?key=${encodeURIComponent(apiKey)}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        systemInstruction: { parts: [{ text: 'You are OUAGx: direct, precise, practical, and warm. Help users turn intent into useful action.' }] },
+        contents: messages.map(message => ({ role: message.role === 'assistant' ? 'model' : 'user', parts: [{ text: message.content }] })),
+      }),
+    });
+    const data = await response.json();
+    if (!response.ok) throw new Error(data?.error?.message || 'Gemini request failed.');
+    return data.candidates?.[0]?.content?.parts?.map(part => part.text || '').join('') || 'No response returned.';
   }
 
   const headers = {
@@ -134,8 +158,9 @@ function normalizeProvider(input) {
   if (!value) return 'openrouter';
   if (['1', 'openrouter', 'open-router'].includes(value)) return 'openrouter';
   if (['2', 'openai'].includes(value)) return 'openai';
-  if (['3', 'custom'].includes(value)) return 'custom';
-  if (['4', 'ouagx-api', 'ouagxapi', 'local-api'].includes(value)) return 'ouagx-api';
+  if (['3', 'gemini', 'google'].includes(value)) return 'gemini';
+  if (['4', 'custom'].includes(value)) return 'custom';
+  if (['5', 'ouagx-api', 'ouagxapi', 'local-api'].includes(value)) return 'ouagx-api';
   return value;
 }
 
@@ -147,8 +172,9 @@ async function configureProvider(options, rl) {
   console.log('Choose your AI provider:');
   console.log('  1) OpenRouter');
   console.log('  2) OpenAI');
-  console.log('  3) Custom API');
-  console.log('  4) OUAGx API (local project API)');
+  console.log('  3) Google Gemini');
+  console.log('  4) Custom API');
+  console.log('  5) OUAGx API (local project API)');
 
   const choice = await rl.question('Provider number or name [1]: ');
   const provider = normalizeProvider(choice || '1');
@@ -157,6 +183,9 @@ async function configureProvider(options, rl) {
   if (!options.model) {
     options.model = getDefaultModel(provider);
   }
+
+  const presets = getModelPresets(provider);
+  if (presets.length) console.log(`Available models: ${presets.join(', ')}`);
 
   if (provider === 'custom') {
     const baseUrl = await rl.question('Custom API base URL: ');
