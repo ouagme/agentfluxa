@@ -111,21 +111,21 @@ function ApiPage() {
 
   const command = `set OUAGX_API_URL=${apiUrl}\nset OUAGX_API_KEY=${apiKey || 'YOUR_API_KEY'}\nset OUAGX_PROVIDER=ouagx-api\nnpm run terminal`;
   const powershellCommand = 'irm https://www.ouagx.com/install.ps1 | iex';
-  const downloadTerminalFile = () => {
-    const file = `@echo off\r\ncd /d "%~dp0"\r\nset "OUAGX_API_URL=${apiUrl}"\r\nset "OUAGX_API_KEY=${apiKey || 'YOUR_API_KEY'}"\r\nset "OUAGX_PROVIDER=ouagx-api"\r\necho Starting OUAGx terminal...\r\nnpm run terminal\r\npause\r\n`;
-    const link = document.createElement('a');
-    link.href = URL.createObjectURL(new Blob([file], { type: 'application/bat' }));
-    link.download = 'ouagx-terminal-api.bat';
-    link.click();
-    URL.revokeObjectURL(link.href);
-  };
+  const projectInstallCommand = 'irm https://www.ouagx.com/install-cli.ps1 | iex';
   const downloadPowerShellInstaller = () => {
     const link = document.createElement('a');
     link.href = '/install.ps1';
     link.download = 'ouagx-install.ps1';
     link.click();
   };
-  <section className="api-setup"><div className="api-card-heading"><div><p>03 / WINDOWS TERMINAL</p><h2>Connect the executable</h2></div><Terminal size={19} /></div><p className="api-card-copy">Download a launcher for the OUAGx terminal folder, then double-click it on Windows.</p><div className="api-command"><pre>{command}</pre><button onClick={() => copy(command, 'command')} aria-label="Copy terminal setup commands" title="Copy setup commands">{copied === 'command' ? <Check size={16} /> : <Copy size={16} />}</button></div><button className="api-download" onClick={downloadTerminalFile}><Download size={16} /> Download OUAGx terminal file</button><p className="api-note">The downloaded `.bat` file contains this API key. Keep it private and rotate the key if the file is exposed.</p></section>
+  const downloadProjectInstaller = () => {
+    const link = document.createElement('a');
+    link.href = '/install-cli.ps1';
+    link.download = 'ouagx-project-install.ps1';
+    link.click();
+  };
+  <section className="api-setup"><div className="api-card-heading"><div><p>03 / WINDOWS TERMINAL</p><h2>Install the project CLI</h2></div><Terminal size={19} /></div><p className="api-card-copy">This downloads the full OUAGx source, installs its dependencies, and creates a launcher. It is the complete project CLI, not just a shortcut.</p><div className="api-command"><pre>{projectInstallCommand}</pre><button onClick={() => copy(projectInstallCommand, 'project-install')} aria-label="Copy project install command" title="Copy project install command">{copied === 'project-install' ? <Check size={16} /> : <Copy size={16} />}</button></div><button className="api-download" onClick={downloadProjectInstaller}><Download size={16} /> Download project installer</button><p className="api-note">The installer checks for Node.js, downloads the GitHub project, runs `npm install`, and asks for your OUAGx API key.</p></section>
+  <section className="api-setup"><div className="api-card-heading"><div><p>04 / EXISTING SOURCE FOLDER</p><h2>Run an existing checkout</h2></div><Terminal size={19} /></div><p className="api-card-copy">Use these commands only when the OUAGx project source is already on your computer.</p><div className="api-command"><pre>{command}</pre><button onClick={() => copy(command, 'command')} aria-label="Copy terminal setup commands" title="Copy setup commands">{copied === 'command' ? <Check size={16} /> : <Copy size={16} />}</button></div><p className="api-note">The downloaded project installer is the recommended option for a new machine.</p></section>
 
   return <main className="api-page">
     <nav className="api-nav"><Link to="/" className="brand"><div className="brand-mark"><Bot size={18} /></div><span>OUAG<span>x</span></span></Link><Link to="/chat" className="api-chat-link">Open chat <ArrowUp size={14} /></Link></nav>
