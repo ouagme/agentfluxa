@@ -107,3 +107,47 @@
 .thread::-webkit-scrollbar-track { background: #151c1a; }
 .thread::-webkit-scrollbar-thumb { border: 2px solid #151c1a; border-radius: 8px; background: #4b7166; }
 .thread::-webkit-scrollbar-thumb:hover { background: #73c5aa; }
+
+.terminal-mode { background: #080d0c; }
+.terminal-mode .chat-header { position: relative; gap: 18px; border-bottom-color: #1d332a; background: #0b1210; box-shadow: 0 1px 0 rgba(116, 239, 194, .04); }
+.terminal-mode .chat-header::after { position: absolute; right: 0; bottom: -1px; left: 0; height: 1px; background: linear-gradient(90deg, transparent, #5be5b8, transparent); content: ''; opacity: .25; }
+.terminal-titlebar { display: flex; align-items: center; gap: 18px; min-width: 0; }
+.terminal-lights { display: flex; gap: 6px; }
+.terminal-lights i { width: 8px; height: 8px; border-radius: 50%; background: #3d5b4f; }
+.terminal-lights i:first-child { background: #df806f; }
+.terminal-lights i:nth-child(2) { background: #d4b16c; }
+.terminal-lights i:last-child { background: #6fd1a0; }
+.terminal-mode .model-picker { color: #c7e8da; }
+.terminal-mode .model-picker strong { font-family: 'DM Mono', monospace; font-size: 12px; font-weight: 500; }
+.terminal-mode .model-picker small { color: #659382; }
+.terminal-status { display: flex; align-items: center; gap: 8px; color: #6e9d8a; font-family: 'DM Mono', monospace; font-size: 9px; text-transform: uppercase; letter-spacing: .7px; }
+.terminal-status .header-control { margin-left: 10px; text-transform: none; letter-spacing: 0; }
+.terminal-mode .thread { width: min(100%, 940px); padding-top: 38px; background: repeating-linear-gradient(0deg, rgba(104, 239, 192, .018) 0, rgba(104, 239, 192, .018) 1px, transparent 1px, transparent 4px); }
+.terminal-mode .message { grid-template-columns: 28px 1fr; gap: 11px; margin-bottom: 27px; }
+.terminal-mode .message-avatar { width: 25px; height: 25px; border-color: #407662; filter: saturate(.7); }
+.terminal-mode .message-body { max-width: 760px; }
+.terminal-mode .message.user .message-body { max-width: min(760px, 100%); padding: 0; border: 0; border-radius: 0; background: transparent; }
+.terminal-mode .message-name { margin-bottom: 7px; color: #70e4b9; font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0; }
+.terminal-mode .message.user .message-name { color: #d1b873; }
+.terminal-mode .message p { color: #b9d7ca; font-family: 'DM Mono', monospace; font-size: 13px; line-height: 1.8; }
+.terminal-mode .message.user p { color: #e0ece6; }
+.terminal-mode .copy-answer { color: #568a75; font-family: 'DM Mono', monospace; }
+.terminal-mode .composer-zone { width: min(100%, 940px); padding-bottom: 21px; }
+.terminal-mode .suggestions { margin-bottom: 8px; }
+.terminal-mode .suggestions button { border: 0; border-radius: 2px; color: #679580; background: transparent; font-family: 'DM Mono', monospace; font-size: 10px; }
+.terminal-mode .suggestions button::before { content: './'; color: #3f765e; }
+.terminal-mode .suggestions button:hover { color: #b4efd9; background: #12231b; }
+.terminal-mode .composer { grid-template-columns: auto 1fr 40px; gap: 8px; padding: 9px 9px 9px 13px; border-color: #315b49; border-radius: 3px; background: #0c1511; box-shadow: 0 0 0 1px rgba(91, 229, 184, .03), 0 14px 36px rgba(0, 0, 0, .28); }
+.terminal-mode .composer:focus-within { border-color: #67d9af; box-shadow: 0 0 0 1px rgba(103, 217, 175, .12), 0 14px 36px rgba(0, 0, 0, .28); }
+.shell-prompt { align-self: center; color: #76e8bb; font-family: 'DM Mono', monospace; font-size: 14px; }
+.terminal-mode .composer textarea { color: #d9f2e8; font-family: 'DM Mono', monospace; font-size: 12px; }
+.terminal-mode .send-button { border-radius: 3px; color: #08140e; background: #76e8bb; }
+.terminal-mode .privacy-note { color: #466f5d; font-family: 'DM Mono', monospace; }
+
+@media (max-width: 720px) {
+	.terminal-mode .chat-header { gap: 9px; }
+	.terminal-lights { display: none; }
+	.terminal-status { margin-left: auto; }
+	.terminal-status > .live-dot, .terminal-status > .idle-dot { display: none; }
+	.terminal-status .header-control { margin-left: 2px; }
+}
